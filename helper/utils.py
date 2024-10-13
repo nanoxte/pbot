@@ -130,27 +130,6 @@ async def run_async(func, *args, **kwargs):
     return await loop.run_in_executor(None, func, *args, **kwargs)
 
 
-async def is_subscribed(bot, query):
-    try:
-        user = await bot.get_chat_member(Config.AUTH_CHANNEL, query.from_user.id)
-    except UserNotParticipant:
-        pass
-    except Exception as e:
-        logger.exception(e)
-    else:
-        if user.status != enums.ChatMemberStatus.BANNED:
-            return True
-    return False
-
-
-async def force_sub(bot, cmd):
-    invite_link = await bot.create_chat_invite_link(int(Config.AUTH_CHANNEL))
-    buttons = [[InlineKeyboardButton(
-        text="•Jᴏɪɴᴇᴅ Tʜᴇ  Ｇʀᴏᴜᴘ•", url="AUTH_CHANNEL")]]
-    text = "**Sᴏʀʀy Dᴜᴅᴇ Yᴏᴜ'ʀᴇ Nᴏᴛ Jᴏɪɴᴇᴅ My Ｇʀᴏᴜᴘ 😐. Sᴏ Pʟᴇᴀꜱᴇ Jᴏɪɴ Oᴜʀ Uᴩᴅᴀᴛᴇ Cʜᴀɴɴᴇʟ Tᴏ Cᴄᴏɴᴛɪɴᴜᴇ**"
-    return await cmd.reply_text(text=text, reply_markup=InlineKeyboardMarkup(buttons))
-
-
 async def ytdl_downloads(bot, update, http_link):
     msg = await update.message.edit(f"**Link:-** {http_link}\n\nDownloading... Please Have Patience\n 𝙇𝙤𝙖𝙙𝙞𝙣𝙜...", disable_web_page_preview=True)
 
